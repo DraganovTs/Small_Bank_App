@@ -32,7 +32,7 @@ public class AccountAggregate extends AggregateRoot {
     }
 
     public void depositFund(double amount) {
-        if (this.active) {
+        if (!this.active) {
             throw new IllegalStateException("Funds cannot be deposited into a closed account!");
         }
         if (amount <= 0) {
@@ -50,7 +50,7 @@ public class AccountAggregate extends AggregateRoot {
     }
 
     public void withdrawFunds(double amount) {
-        if (this.active) {
+        if (!this.active) {
             throw new IllegalStateException("Funds cannot be withdraw for a closed account!");
         }
         raiseEvent(FundsWithdrawEvent.builder()
@@ -65,7 +65,7 @@ public class AccountAggregate extends AggregateRoot {
     }
 
     public void closedAccount(){
-        if (this.active) {
+        if (!this.active) {
             throw new IllegalStateException("The bank account is already closed!");
         }
         raiseEvent(AccountClosedEvent.builder()
