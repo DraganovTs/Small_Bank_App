@@ -24,7 +24,7 @@ public class AccountEventSourceHandler implements EventSourceHandler<AccountAggr
     public AccountAggregate getById(String id) {
         var aggregate = new AccountAggregate();
         var events = eventStore.getEvents(id);
-        if (events != null && events.isEmpty()) {
+        if (events != null && !events.isEmpty()) {
             aggregate.replayEvents(events);
             var latestVersion = events.stream().map(x->x.getVersion()).max(Comparator.naturalOrder());
             aggregate.setVersion(latestVersion.get());
